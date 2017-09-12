@@ -2,16 +2,19 @@
 
 Public Class Proforma
 
-
+    ' Para controles de grilla.
     Private Const YMARGEN = 1.5
     Private Const XMARGEN = 4.9
     Private WRow, Wcol As Integer
+
+    ' Constantes
+    Private Const PRODUCTOS_MAX = 25
     
     Private Sub Proforma_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
         dgvProductos.Rows.Clear()
 
-        For i = 0 To 4
+        For i = 0 To PRODUCTOS_MAX - 1
             dgvProductos.Rows.Add("", "", "", "", "")
         Next
 
@@ -139,7 +142,7 @@ Public Class Proforma
 
     End Sub
 
-    Private Sub txtCondicionPago_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCondicionPago.KeyDown, TextBox1.KeyDown
+    Private Sub txtCondicionPago_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtCondicionPago.KeyDown
 
         If e.KeyData = Keys.Enter Then
             If Trim(txtCondicionPago.Text) = "" Then : Exit Sub : End If
@@ -190,8 +193,7 @@ Public Class Proforma
         If e.KeyData = Keys.Enter Then
             If Trim(txtVia.Text) = "" Then : Exit Sub : End If
 
-            dgvProductos.CurrentCell = dgvProductos.Rows(0).Cells(0)
-            dgvProductos.Focus()
+            txtObservaciones.Focus()
 
         ElseIf e.KeyData = Keys.Escape Then
             txtVia.Text = ""
@@ -367,10 +369,14 @@ Public Class Proforma
 
                     Select Case iCol
                         Case 4
-                            If iRow = 4 Then
+                            If iRow = PRODUCTOS_MAX - 5 Then
                                 .CurrentCell = .Rows(iRow).Cells(iCol)
                             Else
-                                .CurrentCell = .Rows(iRow + 1).Cells(0)
+                                Try
+                                    .CurrentCell = .Rows(iRow + 1).Cells(0)
+                                Catch ex As Exception
+                                    .CurrentCell = .Rows(iRow).Cells(iCol)
+                                End Try
                             End If
 
                         Case Else
@@ -380,15 +386,25 @@ Public Class Proforma
                     Return True
 
                 ElseIf msg.WParam.ToInt32() = Keys.Escape Then
-                    .Rows(iRow).Cells(iCol).Value = ""
 
-                    If iCol = 4 Then
-                        .CurrentCell = .Rows(iRow).Cells(iCol - 1)
-                    Else
-                        .CurrentCell = .Rows(iRow).Cells(iCol + 1)
-                    End If
 
-                    .CurrentCell = .Rows(iRow).Cells(iCol)
+                    Select Case iCol
+                        Case 0, 2, 3
+
+                            .Rows(iRow).Cells(iCol).Value = ""
+
+                            If iCol = 4 Then
+                                .CurrentCell = .Rows(iRow).Cells(iCol - 1)
+                            Else
+                                .CurrentCell = .Rows(iRow).Cells(iCol + 1)
+                            End If
+
+                            .CurrentCell = .Rows(iRow).Cells(iCol)
+
+                        Case Else
+
+                    End Select
+
                 End If
             End If
 
@@ -400,7 +416,8 @@ Public Class Proforma
     Private Sub dgvProductos_CellEnter(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvProductos.CellEnter
         With dgvProductos
             If e.ColumnIndex = 0 Then
-
+                .ClearSelection()
+                .CurrentCell.Style.SelectionBackColor = Color.White ' Evitamos que se vea la seleccion de la celda.
                 Dim _location As Point = .GetCellDisplayRectangle(0, e.RowIndex, False).Location
 
                 _location.Y += .Location.Y + (.CurrentCell.Size.Height / 4) - YMARGEN
@@ -411,7 +428,6 @@ Public Class Proforma
                 Wcol = e.ColumnIndex
                 txtFechaAux.Visible = True
                 txtFechaAux.Focus()
-                .ClearSelection()
             End If
         End With
     End Sub
@@ -450,4 +466,29 @@ Public Class Proforma
         End If
     End Sub
 
+    Private Sub txtDescripcionTotal_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtDescripcionTotal.KeyDown
+
+        If e.KeyData = Keys.Enter Then
+            'If Trim(txtDescripcionTotal.Text) = "" Then : Exit Sub : End If
+
+            'txtTotal.Focus()
+
+        ElseIf e.KeyData = Keys.Escape Then
+            txtDescripcionTotal.Text = ""
+        End If
+
+    End Sub
+
+    Private Sub txtObservaciones_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtObservaciones.KeyDown
+
+        If e.KeyData = Keys.Enter Then
+            
+            dgvProductos.CurrentCell = dgvProductos.Rows(0).Cells(0)
+            dgvProductos.Focus()
+
+        ElseIf e.KeyData = Keys.Escape Then
+            txtObservaciones.Text = ""
+        End If
+
+    End Sub
 End Class
