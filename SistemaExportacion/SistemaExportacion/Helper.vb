@@ -20,13 +20,20 @@
 
     End Function
 
-    Public Function _ConectarA(ByVal empresa As String) As String
+    Public Function _ConectarA(ByVal empresa As String, Optional ByVal testing As Boolean = False) As String
 
         Dim _empresa = empresas.Find(Function(e) UCase(e) = UCase(empresa))
         Dim cs As String = "Data Source=193.168.0.7;Initial Catalog=#EMPRESA#;User ID=usuarioadmin; Password=usuarioadmin"
+        Dim csx As String = "Data Source=(LOCAL)\LOCALSQLSERVER;Initial Catalog=#EMPRESA#;Trusted_Connection=True"
 
         If Not IsNothing(_empresa) Then
-            Return cs.Replace("#EMPRESA#", _empresa)
+
+            If testing Then
+                Return csx.Replace("#EMPRESA#", _empresa)
+            Else
+                Return cs.Replace("#EMPRESA#", _empresa)
+            End If
+
         Else
             Throw New Exception("No se pudo encontrar la empresa a la que se quiere conectar.")
         End If
