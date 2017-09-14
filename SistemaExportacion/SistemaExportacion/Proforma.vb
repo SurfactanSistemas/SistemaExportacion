@@ -491,4 +491,16 @@ Public Class Proforma
         End If
 
     End Sub
+
+    Private Sub btnCerrar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCerrar.Click
+        Me.Close()
+    End Sub
+
+    Private Sub btnEliminar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEliminar.Click
+        MsgBox("Aun no implementado. Faltan definir que criterios tener en cuenta antes de poder eliminar una proforma.", MsgBoxStyle.Information)
+    End Sub
+
+    Private Sub btnConsulta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConsulta.Click
+        MsgBox("Aun no implementado. No hay todavia realizadas consultas.", MsgBoxStyle.Information)
+    End Sub
 End Class

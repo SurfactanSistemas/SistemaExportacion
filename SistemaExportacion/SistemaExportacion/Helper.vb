@@ -4,6 +4,24 @@
 
     Private Const VALIDA_CUIT = "54327654321"
 
+    Public Function _NormalizarFilas(ByVal tabla As DataTable) As DataTable
+
+        If tabla.Rows.Count = 0 Then : Return tabla : End If
+
+        Dim tabla2 As DataTable = tabla.Clone
+
+        tabla2.Rows.Clear()
+
+        For Each row As DataRow In tabla.Rows
+
+            tabla2.ImportRow(_NormalizarFila(row))
+
+        Next
+
+        Return tabla2
+
+    End Function
+
     Public Function _NormalizarFila(ByVal row As DataRow) As DataRow
 
         For r = 0 To row.ItemArray.Count - 1
