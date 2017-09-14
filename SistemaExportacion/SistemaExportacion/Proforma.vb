@@ -14,8 +14,6 @@ Public Class Proforma
 
         _LimpiarGrilla()
 
-        dgvProductos.ClearSelection()
-
         txtFechaAux.Visible = False
 
         WRow = -1
@@ -118,6 +116,8 @@ Public Class Proforma
             dgvProductos.Rows.Add("", "", "", "", "")
         Next
 
+        dgvProductos.ClearSelection()
+
     End Sub
 
     Private Sub _TraerProforma(ByVal NroProforma As String)
@@ -196,6 +196,7 @@ Public Class Proforma
                 Exit Sub
             End Try
 
+            txtFechaAux.Visible = False
             txtFecha.Focus()
 
         ElseIf e.KeyData = Keys.Escape Then
@@ -827,5 +828,9 @@ Public Class Proforma
         _LimpiarGrilla()
 
         txtNroProforma.Focus()
+    End Sub
+
+    Private Sub dgvProductos_CellLeave(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvProductos.CellLeave
+        If txtFechaAux.Visible Then : txtFechaAux.Visible = False : End If
     End Sub
 End Class
