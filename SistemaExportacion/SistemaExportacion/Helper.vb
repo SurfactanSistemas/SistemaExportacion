@@ -134,6 +134,8 @@
         Variable = 1
         Cadena = ""
 
+        campoii = Trim(campoii)
+
         While Variable <= Len(campoii) And Variable > 0
 
             If Mid$(campoii, Variable, 1) <> Space(1) Then

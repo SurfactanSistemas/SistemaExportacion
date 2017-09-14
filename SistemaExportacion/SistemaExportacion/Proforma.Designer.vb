@@ -22,11 +22,11 @@ Partial Class Proforma
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.LayoutPrincipal = New System.Windows.Forms.TableLayoutPanel()
         Me.LayoutCabecera = New System.Windows.Forms.TableLayoutPanel()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -67,10 +67,11 @@ Partial Class Proforma
         Me.txtDireccionCliente = New System.Windows.Forms.TextBox()
         Me.txtNroProforma = New System.Windows.Forms.TextBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.btnAceptar = New System.Windows.Forms.Button()
-        Me.btnEliminar = New System.Windows.Forms.Button()
-        Me.btnConsulta = New System.Windows.Forms.Button()
         Me.btnCerrar = New System.Windows.Forms.Button()
+        Me.btnConsulta = New System.Windows.Forms.Button()
+        Me.btnLimpiar = New System.Windows.Forms.Button()
+        Me.btnEliminar = New System.Windows.Forms.Button()
+        Me.btnAceptar = New System.Windows.Forms.Button()
         Me.LayoutPrincipal.SuspendLayout()
         Me.LayoutCabecera.SuspendLayout()
         Me.LayoutCuerpoPrincipal.SuspendLayout()
@@ -256,8 +257,8 @@ Partial Class Proforma
         '
         'Producto
         '
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Producto.DefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Producto.DefaultCellStyle = DataGridViewCellStyle11
         Me.Producto.HeaderText = "Producto"
         Me.Producto.Name = "Producto"
         Me.Producto.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
@@ -265,8 +266,8 @@ Partial Class Proforma
         'Descripcion
         '
         Me.Descripcion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.Descripcion.DefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.Descripcion.DefaultCellStyle = DataGridViewCellStyle12
         Me.Descripcion.HeaderText = "Descripcion"
         Me.Descripcion.Name = "Descripcion"
         Me.Descripcion.ReadOnly = True
@@ -274,24 +275,24 @@ Partial Class Proforma
         '
         'Cantidad
         '
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Cantidad.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Cantidad.DefaultCellStyle = DataGridViewCellStyle13
         Me.Cantidad.HeaderText = "Cantidad"
         Me.Cantidad.Name = "Cantidad"
         Me.Cantidad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
         'Precio
         '
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Precio.DefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Precio.DefaultCellStyle = DataGridViewCellStyle14
         Me.Precio.HeaderText = "Precio"
         Me.Precio.Name = "Precio"
         Me.Precio.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
         'Total
         '
-        DataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Total.DefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Total.DefaultCellStyle = DataGridViewCellStyle15
         Me.Total.HeaderText = "Total"
         Me.Total.Name = "Total"
         Me.Total.ReadOnly = True
@@ -540,6 +541,7 @@ Partial Class Proforma
         '
         Me.Panel2.Controls.Add(Me.btnCerrar)
         Me.Panel2.Controls.Add(Me.btnConsulta)
+        Me.Panel2.Controls.Add(Me.btnLimpiar)
         Me.Panel2.Controls.Add(Me.btnEliminar)
         Me.Panel2.Controls.Add(Me.btnAceptar)
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Fill
@@ -548,41 +550,50 @@ Partial Class Proforma
         Me.Panel2.Size = New System.Drawing.Size(768, 63)
         Me.Panel2.TabIndex = 3
         '
-        'btnAceptar
+        'btnCerrar
         '
-        Me.btnAceptar.Location = New System.Drawing.Point(177, 9)
-        Me.btnAceptar.Name = "btnAceptar"
-        Me.btnAceptar.Size = New System.Drawing.Size(81, 45)
-        Me.btnAceptar.TabIndex = 0
-        Me.btnAceptar.Text = "Aceptar"
-        Me.btnAceptar.UseVisualStyleBackColor = True
-        '
-        'btnEliminar
-        '
-        Me.btnEliminar.Location = New System.Drawing.Point(288, 9)
-        Me.btnEliminar.Name = "btnEliminar"
-        Me.btnEliminar.Size = New System.Drawing.Size(81, 45)
-        Me.btnEliminar.TabIndex = 0
-        Me.btnEliminar.Text = "Eliminar"
-        Me.btnEliminar.UseVisualStyleBackColor = True
+        Me.btnCerrar.Location = New System.Drawing.Point(554, 9)
+        Me.btnCerrar.Name = "btnCerrar"
+        Me.btnCerrar.Size = New System.Drawing.Size(81, 45)
+        Me.btnCerrar.TabIndex = 0
+        Me.btnCerrar.Text = "Cerrar"
+        Me.btnCerrar.UseVisualStyleBackColor = True
         '
         'btnConsulta
         '
-        Me.btnConsulta.Location = New System.Drawing.Point(399, 9)
+        Me.btnConsulta.Location = New System.Drawing.Point(449, 9)
         Me.btnConsulta.Name = "btnConsulta"
         Me.btnConsulta.Size = New System.Drawing.Size(81, 45)
         Me.btnConsulta.TabIndex = 0
         Me.btnConsulta.Text = "Consulta"
         Me.btnConsulta.UseVisualStyleBackColor = True
         '
-        'btnCerrar
+        'btnLimpiar
         '
-        Me.btnCerrar.Location = New System.Drawing.Point(510, 9)
-        Me.btnCerrar.Name = "btnCerrar"
-        Me.btnCerrar.Size = New System.Drawing.Size(81, 45)
-        Me.btnCerrar.TabIndex = 0
-        Me.btnCerrar.Text = "Cerrar"
-        Me.btnCerrar.UseVisualStyleBackColor = True
+        Me.btnLimpiar.Location = New System.Drawing.Point(344, 9)
+        Me.btnLimpiar.Name = "btnLimpiar"
+        Me.btnLimpiar.Size = New System.Drawing.Size(81, 45)
+        Me.btnLimpiar.TabIndex = 0
+        Me.btnLimpiar.Text = "Limpiar"
+        Me.btnLimpiar.UseVisualStyleBackColor = True
+        '
+        'btnEliminar
+        '
+        Me.btnEliminar.Location = New System.Drawing.Point(239, 9)
+        Me.btnEliminar.Name = "btnEliminar"
+        Me.btnEliminar.Size = New System.Drawing.Size(81, 45)
+        Me.btnEliminar.TabIndex = 0
+        Me.btnEliminar.Text = "Eliminar"
+        Me.btnEliminar.UseVisualStyleBackColor = True
+        '
+        'btnAceptar
+        '
+        Me.btnAceptar.Location = New System.Drawing.Point(134, 9)
+        Me.btnAceptar.Name = "btnAceptar"
+        Me.btnAceptar.Size = New System.Drawing.Size(81, 45)
+        Me.btnAceptar.TabIndex = 0
+        Me.btnAceptar.Text = "Aceptar"
+        Me.btnAceptar.UseVisualStyleBackColor = True
         '
         'Proforma
         '
@@ -647,4 +658,5 @@ Partial Class Proforma
     Friend WithEvents btnConsulta As System.Windows.Forms.Button
     Friend WithEvents btnEliminar As System.Windows.Forms.Button
     Friend WithEvents btnAceptar As System.Windows.Forms.Button
+    Friend WithEvents btnLimpiar As System.Windows.Forms.Button
 End Class

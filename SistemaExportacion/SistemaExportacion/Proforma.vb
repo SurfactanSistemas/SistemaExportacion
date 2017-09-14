@@ -12,11 +12,7 @@ Public Class Proforma
     
     Private Sub Proforma_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-        dgvProductos.Rows.Clear()
-
-        For i = 0 To PRODUCTOS_MAX - 1
-            dgvProductos.Rows.Add("", "", "", "", "")
-        Next
+        _LimpiarGrilla()
 
         dgvProductos.ClearSelection()
 
@@ -31,10 +27,174 @@ Public Class Proforma
         txtNroProforma.Focus()
     End Sub
 
+    Private Sub _TraerDescripcionCliente()
+        Dim cn As SqlConnection = New SqlConnection()
+        Dim cm As SqlCommand = New SqlCommand("SELECT Razon FROM Cliente WHERE CLiente = '" & txtCliente.Text & "'")
+        Dim dr As SqlDataReader
+
+        Try
+            cn.ConnectionString = Helper._ConectarA("SurfactanSA", True)
+            cn.Open()
+            cm.Connection = cn
+
+            dr = cm.ExecuteReader()
+
+            If dr.HasRows Then
+                dr.Read()
+                txtDescripcionCliente.Text = dr.Item("Razon")
+            End If
+
+        Catch ex As Exception
+            MsgBox("Hubo un problema al querer consultar la Base de Datos.", MsgBoxStyle.Critical)
+        Finally
+
+            dr = Nothing
+            cn.Close()
+            cn = Nothing
+            cm = Nothing
+
+        End Try
+
+    End Sub
+
+    Private Function _TraerDescripcionProducto(ByVal codigo As String) As String
+        Dim cn As SqlConnection = New SqlConnection()
+        Dim cm As SqlCommand = New SqlCommand("SELECT Descripcion FROM Terminado WHERE Codigo = '" & codigo & "'")
+        Dim dr As SqlDataReader
+
+        Try
+            cn.ConnectionString = Helper._ConectarA("SurfactanSA", True)
+            cn.Open()
+
+            cm.Connection = cn
+
+            dr = cm.ExecuteReader()
+
+            If dr.HasRows Then
+                dr.Read()
+                Return dr.Item("Descripcion")
+            End If
+
+        Catch ex As Exception
+            MsgBox("Hubo un problema al querer consultar la Base de Datos.", MsgBoxStyle.Critical)
+        Finally
+
+            dr = Nothing
+            cn.Close()
+            cn = Nothing
+            cm = Nothing
+
+        End Try
+
+        Return ""
+
+    End Function
+
+    Private Sub _ProcesarDatosGrilla()
+        For Each row As DataGridViewRow In dgvProductos.Rows
+            With row
+
+                If Trim(.Cells(0).Value) <> "" Then
+
+                    .Cells(1).Value = _TraerDescripcionProducto(.Cells(0).Value)
+                    .Cells(2).Value = Helper.formatonumerico(.Cells(2).Value)
+                    .Cells(3).Value = Helper.formatonumerico(.Cells(3).Value)
+
+                    .Cells(4).Value = Helper.formatonumerico((Val(.Cells(2).Value) * Val(.Cells(3).Value)))
+
+                Else
+                    Exit For
+                End If
+
+            End With
+        Next
+    End Sub
+
+    Private Sub _LimpiarGrilla()
+
+        dgvProductos.Rows.Clear()
+
+        For i = 0 To PRODUCTOS_MAX - 1
+            dgvProductos.Rows.Add("", "", "", "", "")
+        Next
+
+    End Sub
+
+    Private Sub _TraerProforma(ByVal NroProforma As String)
+        Dim cn As SqlConnection = New SqlConnection()
+        Dim cm As SqlCommand = New SqlCommand("SELECT * FROM ProformaExportacion WHERE Proforma = '" & NroProforma & "'")
+        Dim dr As SqlDataReader
+        Dim WRenglon = 0
+
+        btnLimpiar.PerformClick()
+
+        Try
+            cn.ConnectionString = Helper._ConectarA("SurfactanSA", True)
+            cn.Open()
+            cm.Connection = cn
+
+            dr = cm.ExecuteReader()
+
+            If dr.HasRows Then
+                Do While dr.Read()
+                    With dr
+                        If Val(.Item("Renglon")) = 1 Then
+                            txtNroProforma.Text = .Item("Proforma")
+                            txtFecha.Text = .Item("Fecha")
+                            txtCliente.Text = .Item("Cliente")
+                            _TraerDescripcionCliente()
+                            txtDireccionCliente.Text = .Item("Direccion")
+                            txtLocalidadCliente.Text = .Item("Localidad")
+                            txtCondicionPago.Text = .Item("CondPago")
+                            txtOCCliente.Text = .Item("OCCliente")
+                            cmbCondicion.SelectedIndex = Val(.Item("Condicion"))
+                            txtVia.Text = .Item("Via")
+                            txtObservaciones.Text = .Item("Observaciones")
+                            txtDescripcionTotal.Text = .Item("DescriTotal")
+                            txtTotal.Text = Helper.formatonumerico(.Item("Total"))
+                        End If
+
+                        dgvProductos.Rows(WRenglon).Cells(0).Value = .Item("Producto")
+                        dgvProductos.Rows(WRenglon).Cells(2).Value = .Item("Cantidad")
+                        dgvProductos.Rows(WRenglon).Cells(3).Value = .Item("Precio")
+
+                        WRenglon += 1
+
+                    End With
+                Loop
+
+                _ProcesarDatosGrilla()
+
+            Else
+                txtNroProforma.Text = NroProforma
+            End If
+
+        Catch ex As Exception
+            Throw New Exception("Hubo un problema al querer consultar la Base de Datos.")
+        Finally
+
+            dr = Nothing
+            cn.Close()
+            cn = Nothing
+            cm = Nothing
+
+        End Try
+
+    End Sub
+
     Private Sub txtNroProforma_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtNroProforma.KeyDown
 
         If e.KeyData = Keys.Enter Then
             If Trim(txtNroProforma.Text) = "" Then : Exit Sub : End If
+
+            txtNroProforma.Text = Helper.ceros(txtNroProforma.Text, 6)
+
+            Try
+                _TraerProforma(txtNroProforma.Text)
+            Catch ex As Exception
+                MsgBox(ex.Message, MsgBoxStyle.Critical)
+                Exit Sub
+            End Try
 
             txtFecha.Focus()
 
@@ -200,22 +360,6 @@ Public Class Proforma
         End If
 
     End Sub
-
-    'With txtCodigo
-    '    .CurrentCell = .Rows(iRow).Cells(iCol + 1)
-
-    '    Dim _location As Point = .GetCellDisplayRectangle(2, iRow, False).Location
-
-    '    .ClearSelection()
-    '    _location.Y += .Location.Y + (.CurrentCell.Size.Height / 4) - YMARGEN
-    '    _location.X += .Location.X + (.CurrentCell.Size.Width - txtFechaAux.Size.Width) - XMARGEN
-    '    txtFechaAux.Location = _location
-    '    txtFechaAux.Text = .Rows(iRow).Cells(2).Value
-    '    WRow = iRow
-    '    Wcol = iCol
-    '    txtFechaAux.Visible = True
-    '    txtFechaAux.Focus()
-    'End With
 
     Private Function _BuscarTerminado(ByVal terminado As String) As DataRow
         Dim resultados As New DataTable
@@ -482,7 +626,7 @@ Public Class Proforma
     Private Sub txtObservaciones_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtObservaciones.KeyDown
 
         If e.KeyData = Keys.Enter Then
-            
+
             dgvProductos.CurrentCell = dgvProductos.Rows(0).Cells(0)
             dgvProductos.Focus()
 
@@ -502,5 +646,186 @@ Public Class Proforma
 
     Private Sub btnConsulta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConsulta.Click
         MsgBox("Aun no implementado. No hay todavia realizadas consultas.", MsgBoxStyle.Information)
+    End Sub
+
+    Private Function _ProformaExiste(ByVal nroproforma)
+        Dim cn As SqlConnection = New SqlConnection()
+        Dim cm As SqlCommand = New SqlCommand("SELECT TOP 1 Proforma FROM ProformaExpo WHERE Proforma = '" & nroproforma & "'")
+        Dim dr As SqlDataReader
+
+        Try
+            cn.ConnectionString = Helper._ConectarA("SurfactanSA")
+            cn.Open()
+            cm.Connection = cn
+
+            dr = cm.ExecuteReader()
+
+            Return dr.HasRows
+
+        Catch ex As Exception
+            Throw New Exception("Hubo un problema al querer consultar la Base de Datos.")
+        Finally
+
+            dr = Nothing
+            cn.Close()
+            cn = Nothing
+            cm = Nothing
+
+        End Try
+
+    End Function
+
+    Private Sub _ActualizaProforma(ByVal WSql)
+        Dim cn As SqlConnection = New SqlConnection()
+        Dim cm As New SqlCommand(WSql)
+        Dim dr As SqlDataReader
+
+        Try
+            cn.ConnectionString = Helper._ConectarA("SurfactanSA")
+            cn.Open()
+            cm.Connection = cn
+
+            cm.ExecuteNonQuery()
+
+        Catch ex As Exception
+            Throw New Exception("Hubo un problema al querer actualizar la Proforma.")
+        Finally
+
+            dr = Nothing
+            cn.Close()
+            cn = Nothing
+            cm = Nothing
+
+        End Try
+    End Sub
+
+
+    Function _Left(ByVal texto, ByVal largo) As String
+        Return Microsoft.VisualBasic.Left(Trim(texto), largo)
+    End Function
+
+
+    Private Sub btnAceptar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAceptar.Click
+        Dim cn As New SqlConnection()
+        Dim trans As SqlTransaction
+        Dim cm As New SqlCommand()
+        Dim _Actualiza As Boolean = False
+        Dim WClave, WRenglon, XRenglon, WNroProforma, XNroProforma, WFecha, WFechaOrd, WCliente, WDireccion, WLocalidad, WCondPago, WOCCliente, WCondicion, WVia, WObservaciones, WTotal, WDescripcionMonto, WSql
+        Dim WProd As String, WCant, WPrecio
+
+        WClave = ""
+        WRenglon = 0
+        XRenglon = ""
+        WNroProforma = _Left(txtNroProforma.Text, 6)
+        XNroProforma = Helper.ceros(WNroProforma, 6)
+        WFecha = txtFecha.Text
+        WFechaOrd = Helper.ordenaFecha(WFecha)
+        WCliente = _Left(txtCliente.Text, 6)
+        WDireccion = _Left(txtDireccionCliente.Text, 100)
+        WLocalidad = _Left(txtLocalidadCliente.Text, 50)
+        WCondPago = _Left(txtCondicionPago.Text, 50)
+        WOCCliente = _Left(txtOCCliente.Text, 20)
+        WCondicion = Val(cmbCondicion.SelectedIndex)
+        WVia = _Left(txtVia.Text, 20)
+        WObservaciones = _Left(txtObservaciones.Text, 100)
+        WTotal = Val(Helper.formatonumerico(txtTotal.Text))
+        WDescripcionMonto = UCase(_Left(txtDescripcionTotal.Text, 100))
+
+        WSql = ""
+
+        WProd = ""
+        WCant = 0.0
+        WPrecio = 0.0
+
+        Try
+            cn.ConnectionString = Helper._ConectarA("SurfactanSA", True) ' TRUE: Para testing en local.
+
+            cn.Open()
+            trans = cn.BeginTransaction
+
+            cm.Connection = cn
+
+            For Each row As DataGridViewRow In dgvProductos.Rows
+                With row
+                    WProd = Trim(.Cells(0).Value)
+                    WCant = Val(.Cells(2).Value)
+                    WPrecio = Val(.Cells(3).Value)
+
+                    If WProd.Replace("-", "") <> "" Then
+
+                        If WCant > 0 And WPrecio > 0 Then
+                            WRenglon += 1
+
+                            XRenglon = Helper.ceros(WRenglon, 2)
+
+                            WClave = XNroProforma & XRenglon
+
+                            WSql = "DELETE ProformaExportacion WHERE Proforma = '" & XNroProforma & "'"
+
+                            cm.Transaction = trans
+
+                            cm.CommandText = WSql
+
+                            cm.ExecuteNonQuery()
+
+                            WSql = "INSERT INTO ProformaExportacion (Clave, Proforma, Renglon, Fecha, FechaOrd, Cliente, Direccion, Localidad, CondPago, OCCliente, Condicion, Via, Observaciones, Producto, Cantidad, Precio, Total, DescriTotal)" _
+                                 & " VALUES " _
+                                 & " ('" & WClave & "', '" & XNroProforma & "', '" & XRenglon & "', '" & WFecha & "', '" & WFechaOrd & "', '" & WCliente & "', '" & WDireccion & "', '" & WLocalidad & "', '" & WCondPago & "', '" & WOCCliente & "', '" & WCondicion & "', '" & WVia & "', '" & WObservaciones & "', '" & WProd & "', " & Helper.formatonumerico(WCant) & ", " & Helper.formatonumerico(WPrecio) & ", " & Helper.formatonumerico(WTotal) & ", '" & WDescripcionMonto & "')"
+
+
+                            cm.CommandText = WSql
+
+                            cm.ExecuteNonQuery()
+
+                        End If
+                    Else
+                        Exit For
+                    End If
+
+                End With
+            Next
+
+            ' Si no hubo nigun error durante la carga de datos, confirmo los cambios.
+            trans.Commit()
+
+            txtNroProforma.Text = WNroProforma
+            txtNroProforma_KeyDown(Nothing, New KeyEventArgs(Keys.Enter))
+
+            txtNroProforma.Focus()
+
+        Catch ex As Exception
+            If Not IsNothing(trans) Then
+                ' En caso de una Excepcion, vuelvo para atras los cambios.
+                trans.Rollback()
+                trans = Nothing
+            End If
+            cn.Close()
+            cn = Nothing
+            cm = Nothing
+            MsgBox(ex.Message, MsgBoxStyle.Critical)
+            Exit Sub
+        End Try
+
+        MsgBox("La Proforma " & XNroProforma & ", ha sido grabada con exito.", MsgBoxStyle.Information)
+
+    End Sub
+
+    Private Sub btnLimpiar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLimpiar.Click
+        txtNroProforma.Text = ""
+        txtFecha.Text = Date.Now.ToString("dd-MM-yyyy")
+        txtCliente.Text = ""
+        txtDescripcionCliente.Text = ""
+        txtDireccionCliente.Text = ""
+        txtLocalidadCliente.Text = ""
+        txtCondicionPago.Text = ""
+        txtOCCliente.Text = ""
+        txtVia.Text = ""
+        cmbCondicion.SelectedIndex = 0
+        txtObservaciones.Text = ""
+        txtDescripcionTotal.Text = ""
+        txtTotal.Text = ""
+        _LimpiarGrilla()
+
+        txtNroProforma.Focus()
     End Sub
 End Class
