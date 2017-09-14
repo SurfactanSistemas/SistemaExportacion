@@ -22,11 +22,11 @@ Partial Class Proforma
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.LayoutPrincipal = New System.Windows.Forms.TableLayoutPanel()
         Me.LayoutCabecera = New System.Windows.Forms.TableLayoutPanel()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -38,11 +38,6 @@ Partial Class Proforma
         Me.txtObservaciones = New System.Windows.Forms.TextBox()
         Me.txtFechaAux = New System.Windows.Forms.MaskedTextBox()
         Me.dgvProductos = New System.Windows.Forms.DataGridView()
-        Me.Producto = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Descripcion = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Cantidad = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Precio = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Total = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.cmbCondicion = New System.Windows.Forms.ComboBox()
         Me.txtFecha = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -72,6 +67,13 @@ Partial Class Proforma
         Me.btnLimpiar = New System.Windows.Forms.Button()
         Me.btnEliminar = New System.Windows.Forms.Button()
         Me.btnAceptar = New System.Windows.Forms.Button()
+        Me.txtPais = New System.Windows.Forms.TextBox()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.Producto = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Descripcion = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Cantidad = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Precio = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Total = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.LayoutPrincipal.SuspendLayout()
         Me.LayoutCabecera.SuspendLayout()
         Me.LayoutCuerpoPrincipal.SuspendLayout()
@@ -184,6 +186,7 @@ Partial Class Proforma
         Me.Panel1.Controls.Add(Me.Label5)
         Me.Panel1.Controls.Add(Me.Label6)
         Me.Panel1.Controls.Add(Me.Label8)
+        Me.Panel1.Controls.Add(Me.Label16)
         Me.Panel1.Controls.Add(Me.Label11)
         Me.Panel1.Controls.Add(Me.Label13)
         Me.Panel1.Controls.Add(Me.Label10)
@@ -196,6 +199,7 @@ Partial Class Proforma
         Me.Panel1.Controls.Add(Me.txtDescripcionCliente)
         Me.Panel1.Controls.Add(Me.txtCliente)
         Me.Panel1.Controls.Add(Me.txtDescripcionTotal)
+        Me.Panel1.Controls.Add(Me.txtPais)
         Me.Panel1.Controls.Add(Me.txtCondicionPago)
         Me.Panel1.Controls.Add(Me.txtVia)
         Me.Panel1.Controls.Add(Me.txtOCCliente)
@@ -225,6 +229,7 @@ Partial Class Proforma
         'txtObservaciones
         '
         Me.txtObservaciones.Location = New System.Drawing.Point(133, 134)
+        Me.txtObservaciones.MaxLength = 100
         Me.txtObservaciones.Name = "txtObservaciones"
         Me.txtObservaciones.Size = New System.Drawing.Size(624, 20)
         Me.txtObservaciones.TabIndex = 10
@@ -254,49 +259,6 @@ Partial Class Proforma
         Me.dgvProductos.Name = "dgvProductos"
         Me.dgvProductos.Size = New System.Drawing.Size(737, 168)
         Me.dgvProductos.TabIndex = 8
-        '
-        'Producto
-        '
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Producto.DefaultCellStyle = DataGridViewCellStyle16
-        Me.Producto.HeaderText = "Producto"
-        Me.Producto.Name = "Producto"
-        Me.Producto.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Descripcion
-        '
-        Me.Descripcion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.Descripcion.DefaultCellStyle = DataGridViewCellStyle17
-        Me.Descripcion.HeaderText = "Descripcion"
-        Me.Descripcion.Name = "Descripcion"
-        Me.Descripcion.ReadOnly = True
-        Me.Descripcion.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Cantidad
-        '
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Cantidad.DefaultCellStyle = DataGridViewCellStyle18
-        Me.Cantidad.HeaderText = "Cantidad"
-        Me.Cantidad.Name = "Cantidad"
-        Me.Cantidad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Precio
-        '
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Precio.DefaultCellStyle = DataGridViewCellStyle19
-        Me.Precio.HeaderText = "Precio"
-        Me.Precio.Name = "Precio"
-        Me.Precio.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Total
-        '
-        DataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Total.DefaultCellStyle = DataGridViewCellStyle20
-        Me.Total.HeaderText = "Total"
-        Me.Total.Name = "Total"
-        Me.Total.ReadOnly = True
-        Me.Total.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
         'cmbCondicion
         '
@@ -482,6 +444,7 @@ Partial Class Proforma
         'txtCliente
         '
         Me.txtCliente.Location = New System.Drawing.Point(407, 23)
+        Me.txtCliente.MaxLength = 6
         Me.txtCliente.Name = "txtCliente"
         Me.txtCliente.Size = New System.Drawing.Size(79, 20)
         Me.txtCliente.TabIndex = 0
@@ -489,6 +452,7 @@ Partial Class Proforma
         'txtDescripcionTotal
         '
         Me.txtDescripcionTotal.Location = New System.Drawing.Point(87, 345)
+        Me.txtDescripcionTotal.MaxLength = 100
         Me.txtDescripcionTotal.Name = "txtDescripcionTotal"
         Me.txtDescripcionTotal.Size = New System.Drawing.Size(462, 20)
         Me.txtDescripcionTotal.TabIndex = 0
@@ -496,6 +460,7 @@ Partial Class Proforma
         'txtCondicionPago
         '
         Me.txtCondicionPago.Location = New System.Drawing.Point(97, 96)
+        Me.txtCondicionPago.MaxLength = 50
         Me.txtCondicionPago.Name = "txtCondicionPago"
         Me.txtCondicionPago.Size = New System.Drawing.Size(211, 20)
         Me.txtCondicionPago.TabIndex = 0
@@ -503,6 +468,7 @@ Partial Class Proforma
         'txtVia
         '
         Me.txtVia.Location = New System.Drawing.Point(665, 96)
+        Me.txtVia.MaxLength = 20
         Me.txtVia.Name = "txtVia"
         Me.txtVia.Size = New System.Drawing.Size(93, 20)
         Me.txtVia.TabIndex = 0
@@ -510,6 +476,7 @@ Partial Class Proforma
         'txtOCCliente
         '
         Me.txtOCCliente.Location = New System.Drawing.Point(348, 96)
+        Me.txtOCCliente.MaxLength = 20
         Me.txtOCCliente.Name = "txtOCCliente"
         Me.txtOCCliente.Size = New System.Drawing.Size(92, 20)
         Me.txtOCCliente.TabIndex = 0
@@ -518,13 +485,15 @@ Partial Class Proforma
         'txtLocalidadCliente
         '
         Me.txtLocalidadCliente.Location = New System.Drawing.Point(492, 60)
+        Me.txtLocalidadCliente.MaxLength = 50
         Me.txtLocalidadCliente.Name = "txtLocalidadCliente"
-        Me.txtLocalidadCliente.Size = New System.Drawing.Size(266, 20)
+        Me.txtLocalidadCliente.Size = New System.Drawing.Size(131, 20)
         Me.txtLocalidadCliente.TabIndex = 0
         '
         'txtDireccionCliente
         '
         Me.txtDireccionCliente.Location = New System.Drawing.Point(97, 60)
+        Me.txtDireccionCliente.MaxLength = 100
         Me.txtDireccionCliente.Name = "txtDireccionCliente"
         Me.txtDireccionCliente.Size = New System.Drawing.Size(309, 20)
         Me.txtDireccionCliente.TabIndex = 0
@@ -532,6 +501,7 @@ Partial Class Proforma
         'txtNroProforma
         '
         Me.txtNroProforma.Location = New System.Drawing.Point(97, 24)
+        Me.txtNroProforma.MaxLength = 6
         Me.txtNroProforma.Name = "txtNroProforma"
         Me.txtNroProforma.Size = New System.Drawing.Size(79, 20)
         Me.txtNroProforma.TabIndex = 0
@@ -595,6 +565,71 @@ Partial Class Proforma
         Me.btnAceptar.Text = "Aceptar"
         Me.btnAceptar.UseVisualStyleBackColor = True
         '
+        'txtPais
+        '
+        Me.txtPais.Location = New System.Drawing.Point(665, 59)
+        Me.txtPais.MaxLength = 15
+        Me.txtPais.Name = "txtPais"
+        Me.txtPais.Size = New System.Drawing.Size(93, 20)
+        Me.txtPais.TabIndex = 0
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Bold)
+        Me.Label16.ForeColor = System.Drawing.SystemColors.Control
+        Me.Label16.Location = New System.Drawing.Point(630, 60)
+        Me.Label16.Margin = New System.Windows.Forms.Padding(0)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(37, 18)
+        Me.Label16.TabIndex = 3
+        Me.Label16.Text = "Pais:"
+        Me.Label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Producto
+        '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Producto.DefaultCellStyle = DataGridViewCellStyle1
+        Me.Producto.HeaderText = "Producto"
+        Me.Producto.MaxInputLength = 12
+        Me.Producto.Name = "Producto"
+        Me.Producto.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Descripcion
+        '
+        Me.Descripcion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.Descripcion.DefaultCellStyle = DataGridViewCellStyle2
+        Me.Descripcion.HeaderText = "Descripcion"
+        Me.Descripcion.Name = "Descripcion"
+        Me.Descripcion.ReadOnly = True
+        Me.Descripcion.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Cantidad
+        '
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Cantidad.DefaultCellStyle = DataGridViewCellStyle3
+        Me.Cantidad.HeaderText = "Cantidad"
+        Me.Cantidad.Name = "Cantidad"
+        Me.Cantidad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Precio
+        '
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Precio.DefaultCellStyle = DataGridViewCellStyle4
+        Me.Precio.HeaderText = "Precio"
+        Me.Precio.Name = "Precio"
+        Me.Precio.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Total
+        '
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Total.DefaultCellStyle = DataGridViewCellStyle5
+        Me.Total.HeaderText = "Total"
+        Me.Total.Name = "Total"
+        Me.Total.ReadOnly = True
+        Me.Total.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
         'Proforma
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -642,11 +677,6 @@ Partial Class Proforma
     Friend WithEvents txtVia As System.Windows.Forms.TextBox
     Friend WithEvents dgvProductos As System.Windows.Forms.DataGridView
     Friend WithEvents txtFechaAux As System.Windows.Forms.MaskedTextBox
-    Friend WithEvents Producto As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Descripcion As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Cantidad As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Precio As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Total As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents txtTotal As System.Windows.Forms.TextBox
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents Label14 As System.Windows.Forms.Label
@@ -659,4 +689,11 @@ Partial Class Proforma
     Friend WithEvents btnEliminar As System.Windows.Forms.Button
     Friend WithEvents btnAceptar As System.Windows.Forms.Button
     Friend WithEvents btnLimpiar As System.Windows.Forms.Button
+    Friend WithEvents Label16 As System.Windows.Forms.Label
+    Friend WithEvents txtPais As System.Windows.Forms.TextBox
+    Friend WithEvents Producto As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Descripcion As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Cantidad As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Precio As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Total As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

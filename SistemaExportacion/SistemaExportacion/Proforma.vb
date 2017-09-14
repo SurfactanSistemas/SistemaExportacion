@@ -25,13 +25,17 @@ Public Class Proforma
         txtNroProforma.Focus()
     End Sub
 
+    Private Function _CS(Optional ByVal empresa As String = "SurfactanSA")
+        Return Helper._ConectarA(empresa, True)
+    End Function
+
     Private Sub _TraerDescripcionCliente()
         Dim cn As SqlConnection = New SqlConnection()
         Dim cm As SqlCommand = New SqlCommand("SELECT Razon FROM Cliente WHERE CLiente = '" & txtCliente.Text & "'")
         Dim dr As SqlDataReader
 
         Try
-            cn.ConnectionString = Helper._ConectarA("SurfactanSA", True)
+            cn.ConnectionString = _CS()
             cn.Open()
             cm.Connection = cn
 
@@ -61,7 +65,7 @@ Public Class Proforma
         Dim dr As SqlDataReader
 
         Try
-            cn.ConnectionString = Helper._ConectarA("SurfactanSA", True)
+            cn.ConnectionString = _CS()
             cn.Open()
 
             cm.Connection = cn
@@ -129,7 +133,7 @@ Public Class Proforma
         btnLimpiar.PerformClick()
 
         Try
-            cn.ConnectionString = Helper._ConectarA("SurfactanSA", True)
+            cn.ConnectionString = _CS()
             cn.Open()
             cm.Connection = cn
 
@@ -151,6 +155,7 @@ Public Class Proforma
                             txtVia.Text = .Item("Via")
                             txtObservaciones.Text = .Item("Observaciones")
                             txtDescripcionTotal.Text = .Item("DescriTotal")
+                            txtPais.Text = .Item("Pais")
                             txtTotal.Text = Helper.formatonumerico(.Item("Total"))
                         End If
 
@@ -253,7 +258,7 @@ Public Class Proforma
         Dim dr As New SqlDataAdapter(cm, cn)
 
         Try
-            cn.ConnectionString = Helper._ConectarA("SurfactanSA")
+            cn.ConnectionString = _CS()
             cn.Open()
 
             dr.Fill(resultados)
@@ -349,7 +354,7 @@ Public Class Proforma
         End If
     End Sub
 
-    Private Sub txtVia_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtVia.KeyDown
+    Private Sub txtVia_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtVia.KeyDown, txtPais.KeyDown
 
         If e.KeyData = Keys.Enter Then
             If Trim(txtVia.Text) = "" Then : Exit Sub : End If
@@ -370,7 +375,7 @@ Public Class Proforma
 
         Try
 
-            cn.ConnectionString = Helper._ConectarA("SurfactanSA")
+            cn.ConnectionString = _CS()
             cn.Open()
 
             dr.Fill(resultados)
@@ -513,8 +518,8 @@ Public Class Proforma
                     End If
 
                     Select Case iCol
-                        Case 4
-                            If iRow = PRODUCTOS_MAX - 5 Then
+                        Case 3, 4
+                            If iRow = PRODUCTOS_MAX - 1 Then
                                 .CurrentCell = .Rows(iRow).Cells(iCol)
                             Else
                                 Try
@@ -641,8 +646,88 @@ Public Class Proforma
         Me.Close()
     End Sub
 
+    Private Function _ExisteProforma(ByVal NroProforma As String) As Boolean
+        Dim cn As New SqlConnection()
+        Dim cm As New SqlCommand()
+        Dim dr As SqlDataReader
+
+        Try
+            cn.ConnectionString = _CS()
+            cn.Open()
+
+            cm.Connection = cn
+            cm.CommandText = "SELECT Proforma FROM ProformaExportacion WHERE Proforma = '" & txtNroProforma.Text & "'"
+
+            dr = cm.ExecuteReader()
+
+            Return dr.HasRows
+
+        Catch ex As Exception
+            MsgBox("Hubo un problema al querer consultar la Base de Datos.", MsgBoxStyle.Critical)
+        Finally
+
+            dr = Nothing
+            cn.Close()
+            cn = Nothing
+            cm = Nothing
+
+        End Try
+
+        Return False
+
+    End Function
+
     Private Sub btnEliminar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEliminar.Click
-        MsgBox("Aun no implementado. Faltan definir que criterios tener en cuenta antes de poder eliminar una proforma.", MsgBoxStyle.Information)
+
+        If Trim(txtNroProforma.Text) = "" Or Not _ExisteProforma(txtNroProforma.Text) Then
+
+            txtNroProforma.Focus()
+            Exit Sub
+
+        End If
+
+        If MsgBox("¿Esta seguro de que quiere eliminar la Preforma " & txtNroProforma.Text & " ?", MsgBoxStyle.YesNo, MsgBoxStyle.Exclamation) = DialogResult.Yes Then
+
+            Dim cn As New SqlConnection()
+            Dim cm As New SqlCommand()
+            Dim trans As SqlTransaction
+
+            Try
+
+                cn.ConnectionString = _CS()
+                cn.Open()
+                trans = cn.BeginTransaction
+
+                cm.Connection = cn
+                cm.CommandText = "DELETE FROM ProformaExportacion WHERE Proforma = '" & txtNroProforma.Text & "'"
+                cm.Transaction = trans
+
+                cm.ExecuteNonQuery()
+
+                trans.Commit()
+
+                btnLimpiar.PerformClick()
+
+                txtNroProforma.Focus()
+
+            Catch ex As Exception
+
+                If Not IsNothing(trans) Then
+                    trans.Rollback()
+                End If
+
+                MsgBox("Hubo un problema al querer consultar la Base de Datos.", MsgBoxStyle.Critical)
+
+            Finally
+
+                trans = Nothing
+                cn.Close()
+                cn = Nothing
+                cm = Nothing
+
+            End Try
+
+        End If
     End Sub
 
     Private Sub btnConsulta_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConsulta.Click
@@ -655,7 +740,7 @@ Public Class Proforma
         Dim dr As SqlDataReader
 
         Try
-            cn.ConnectionString = Helper._ConectarA("SurfactanSA")
+            cn.ConnectionString = _CS()
             cn.Open()
             cm.Connection = cn
 
@@ -682,7 +767,7 @@ Public Class Proforma
         Dim dr As SqlDataReader
 
         Try
-            cn.ConnectionString = Helper._ConectarA("SurfactanSA")
+            cn.ConnectionString = _CS()
             cn.Open()
             cm.Connection = cn
 
@@ -711,7 +796,7 @@ Public Class Proforma
         Dim trans As SqlTransaction
         Dim cm As New SqlCommand()
         Dim _Actualiza As Boolean = False
-        Dim WClave, WRenglon, XRenglon, WNroProforma, XNroProforma, WFecha, WFechaOrd, WCliente, WDireccion, WLocalidad, WCondPago, WOCCliente, WCondicion, WVia, WObservaciones, WTotal, WDescripcionMonto, WSql
+        Dim WClave, WRenglon, XRenglon, WNroProforma, XNroProforma, WFecha, WFechaOrd, WCliente, WDireccion, WLocalidad, WCondPago, WOCCliente, WCondicion, WVia, WObservaciones, WTotal, WDescripcionMonto, WSql, WPais
         Dim WProd As String, WCant, WPrecio
 
         WClave = ""
@@ -731,6 +816,7 @@ Public Class Proforma
         WObservaciones = _Left(txtObservaciones.Text, 100)
         WTotal = Val(Helper.formatonumerico(txtTotal.Text))
         WDescripcionMonto = UCase(_Left(txtDescripcionTotal.Text, 100))
+        WPais = _Left(txtPais.Text, 15)
 
         WSql = ""
 
@@ -739,12 +825,21 @@ Public Class Proforma
         WPrecio = 0.0
 
         Try
-            cn.ConnectionString = Helper._ConectarA("SurfactanSA", True) ' TRUE: Para testing en local.
+            cn.ConnectionString = _CS() ' TRUE: Para testing en local.
 
             cn.Open()
             trans = cn.BeginTransaction
 
             cm.Connection = cn
+
+
+            WSql = "DELETE ProformaExportacion WHERE Proforma = '" & XNroProforma & "'"
+
+            cm.Transaction = trans
+
+            cm.CommandText = WSql
+
+            cm.ExecuteNonQuery()
 
             For Each row As DataGridViewRow In dgvProductos.Rows
                 With row
@@ -761,17 +856,9 @@ Public Class Proforma
 
                             WClave = XNroProforma & XRenglon
 
-                            WSql = "DELETE ProformaExportacion WHERE Proforma = '" & XNroProforma & "'"
-
-                            cm.Transaction = trans
-
-                            cm.CommandText = WSql
-
-                            cm.ExecuteNonQuery()
-
-                            WSql = "INSERT INTO ProformaExportacion (Clave, Proforma, Renglon, Fecha, FechaOrd, Cliente, Direccion, Localidad, CondPago, OCCliente, Condicion, Via, Observaciones, Producto, Cantidad, Precio, Total, DescriTotal)" _
+                            WSql = "INSERT INTO ProformaExportacion (Clave, Proforma, Renglon, Fecha, FechaOrd, Cliente, Direccion, Localidad, CondPago, OCCliente, Condicion, Via, Observaciones, Producto, Cantidad, Precio, Total, DescriTotal, Pais)" _
                                  & " VALUES " _
-                                 & " ('" & WClave & "', '" & XNroProforma & "', '" & XRenglon & "', '" & WFecha & "', '" & WFechaOrd & "', '" & WCliente & "', '" & WDireccion & "', '" & WLocalidad & "', '" & WCondPago & "', '" & WOCCliente & "', '" & WCondicion & "', '" & WVia & "', '" & WObservaciones & "', '" & WProd & "', " & Helper.formatonumerico(WCant) & ", " & Helper.formatonumerico(WPrecio) & ", " & Helper.formatonumerico(WTotal) & ", '" & WDescripcionMonto & "')"
+                                 & " ('" & WClave & "', '" & XNroProforma & "', '" & XRenglon & "', '" & WFecha & "', '" & WFechaOrd & "', '" & WCliente & "', '" & WDireccion & "', '" & WLocalidad & "', '" & WCondPago & "', '" & WOCCliente & "', '" & WCondicion & "', '" & WVia & "', '" & WObservaciones & "', '" & WProd & "', " & Helper.formatonumerico(WCant) & ", " & Helper.formatonumerico(WPrecio) & ", " & Helper.formatonumerico(WTotal) & ", '" & WDescripcionMonto & "', '" & WPais & "')"
 
 
                             cm.CommandText = WSql
@@ -825,12 +912,10 @@ Public Class Proforma
         txtObservaciones.Text = ""
         txtDescripcionTotal.Text = ""
         txtTotal.Text = ""
+        txtPais.Text = ""
         _LimpiarGrilla()
 
         txtNroProforma.Focus()
     End Sub
 
-    Private Sub dgvProductos_CellLeave(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvProductos.CellLeave
-        If txtFechaAux.Visible Then : txtFechaAux.Visible = False : End If
-    End Sub
 End Class
