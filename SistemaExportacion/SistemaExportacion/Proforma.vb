@@ -918,4 +918,7 @@ Public Class Proforma
         txtNroProforma.Focus()
     End Sub
 
+    Private Sub btnVistaPrevia_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVistaPrevia.Click
+
+    End Sub
 End Class
