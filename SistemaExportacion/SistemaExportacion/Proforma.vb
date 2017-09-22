@@ -8,7 +8,7 @@ Public Class Proforma
     Private WRow, Wcol As Integer
 
     ' Constantes
-    Private Const PRODUCTOS_MAX = 25
+    Private Const PRODUCTOS_MAX = 6
     
     Private Sub Proforma_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
@@ -27,6 +27,7 @@ Public Class Proforma
 
     Private Function _CS(Optional ByVal empresa As String = "SurfactanSA")
         Return Helper._ConectarA(empresa, True)
+        'Return Helper._ConectarA(empresa)
     End Function
 
     Private Sub _TraerDescripcionCliente()
@@ -896,6 +897,10 @@ Public Class Proforma
 
         MsgBox("La Proforma " & XNroProforma & ", ha sido grabada con exito.", MsgBoxStyle.Information)
 
+        btnVistaPrevia.PerformClick()
+
+        btnLimpiar.PerformClick()
+
     End Sub
 
     Private Sub btnLimpiar_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLimpiar.Click
@@ -919,6 +924,10 @@ Public Class Proforma
     End Sub
 
     Private Sub btnVistaPrevia_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVistaPrevia.Click
-
+        With VistaPrevia
+            .Reporte = New ProformaVistaPrevia
+            .Formula = "{ProformaExportacion.Proforma} = '" & txtNroProforma.Text & "'"
+            .Mostrar()
+        End With
     End Sub
 End Class

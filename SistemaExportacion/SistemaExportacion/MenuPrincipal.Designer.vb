@@ -22,18 +22,23 @@ Partial Class MenuPrincipal
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.LayoutPrincipal = New System.Windows.Forms.TableLayoutPanel()
         Me.LayoutCabecera = New System.Windows.Forms.TableLayoutPanel()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LayoutCuerpoPrincipal = New System.Windows.Forms.TableLayoutPanel()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.btnHistorialProforma = New System.Windows.Forms.Button()
+        Me.btnNuevaProforma = New System.Windows.Forms.Button()
         Me.LayoutFiltros = New System.Windows.Forms.TableLayoutPanel()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.LayoutPrincipal.SuspendLayout()
         Me.LayoutCabecera.SuspendLayout()
         Me.LayoutCuerpoPrincipal.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'LayoutPrincipal
@@ -105,13 +110,14 @@ Partial Class MenuPrincipal
         Me.LayoutCuerpoPrincipal.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 84.0!))
         Me.LayoutCuerpoPrincipal.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.LayoutCuerpoPrincipal.Controls.Add(Me.DataGridView1, 1, 0)
-        Me.LayoutCuerpoPrincipal.Controls.Add(Me.Button1, 0, 0)
+        Me.LayoutCuerpoPrincipal.Controls.Add(Me.Panel1, 0, 0)
         Me.LayoutCuerpoPrincipal.Dock = System.Windows.Forms.DockStyle.Fill
         Me.LayoutCuerpoPrincipal.Location = New System.Drawing.Point(0, 91)
         Me.LayoutCuerpoPrincipal.Margin = New System.Windows.Forms.Padding(0)
         Me.LayoutCuerpoPrincipal.Name = "LayoutCuerpoPrincipal"
         Me.LayoutCuerpoPrincipal.RowCount = 1
         Me.LayoutCuerpoPrincipal.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.LayoutCuerpoPrincipal.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 388.0!))
         Me.LayoutCuerpoPrincipal.Size = New System.Drawing.Size(826, 388)
         Me.LayoutCuerpoPrincipal.TabIndex = 1
         '
@@ -126,18 +132,44 @@ Partial Class MenuPrincipal
         Me.DataGridView1.Size = New System.Drawing.Size(712, 358)
         Me.DataGridView1.TabIndex = 0
         '
-        'Button1
+        'Panel1
         '
-        Me.Button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
-        Me.Button1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button1.Location = New System.Drawing.Point(10, 10)
-        Me.Button1.Margin = New System.Windows.Forms.Padding(10, 10, 0, 10)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(74, 56)
-        Me.Button1.TabIndex = 1
-        Me.Button1.Text = "Nueva Proforma"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.Panel1.Controls.Add(Me.btnHistorialProforma)
+        Me.Panel1.Controls.Add(Me.btnNuevaProforma)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Panel1.Location = New System.Drawing.Point(0, 0)
+        Me.Panel1.Margin = New System.Windows.Forms.Padding(0)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(84, 388)
+        Me.Panel1.TabIndex = 1
+        '
+        'btnHistorialProforma
+        '
+        Me.btnHistorialProforma.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btnHistorialProforma.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnHistorialProforma.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnHistorialProforma.Location = New System.Drawing.Point(5, 89)
+        Me.btnHistorialProforma.Margin = New System.Windows.Forms.Padding(10, 10, 0, 10)
+        Me.btnHistorialProforma.Name = "btnHistorialProforma"
+        Me.btnHistorialProforma.Size = New System.Drawing.Size(74, 56)
+        Me.btnHistorialProforma.TabIndex = 3
+        Me.btnHistorialProforma.Text = "Historial de Proforma"
+        Me.ToolTip1.SetToolTip(Me.btnHistorialProforma, "Abrir Formulario para Alta / Consulta de Proforma")
+        Me.btnHistorialProforma.UseVisualStyleBackColor = True
+        '
+        'btnNuevaProforma
+        '
+        Me.btnNuevaProforma.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btnNuevaProforma.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnNuevaProforma.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNuevaProforma.Location = New System.Drawing.Point(5, 24)
+        Me.btnNuevaProforma.Margin = New System.Windows.Forms.Padding(10, 10, 0, 10)
+        Me.btnNuevaProforma.Name = "btnNuevaProforma"
+        Me.btnNuevaProforma.Size = New System.Drawing.Size(74, 56)
+        Me.btnNuevaProforma.TabIndex = 2
+        Me.btnNuevaProforma.Text = "Nueva Proforma"
+        Me.ToolTip1.SetToolTip(Me.btnNuevaProforma, "Abrir Formulario para Alta / Consulta de Proforma")
+        Me.btnNuevaProforma.UseVisualStyleBackColor = True
         '
         'LayoutFiltros
         '
@@ -167,6 +199,7 @@ Partial Class MenuPrincipal
         Me.LayoutCabecera.ResumeLayout(False)
         Me.LayoutCuerpoPrincipal.ResumeLayout(False)
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -177,6 +210,9 @@ Partial Class MenuPrincipal
     Friend WithEvents LayoutCuerpoPrincipal As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents LayoutFiltros As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents btnHistorialProforma As System.Windows.Forms.Button
+    Friend WithEvents btnNuevaProforma As System.Windows.Forms.Button
 
 End Class
